@@ -2,5 +2,8 @@
   (:require
    [app.test-route :as t]))
 
-(defn route []
-  (t/test-route))
+(def routes 
+  [{:path "/wurst"
+    :method :get
+    :response {:status 200
+               :body t/test-route}}])

@@ -1,7 +1,11 @@
 (ns app.response
-  (:require [hiccup2.core :as h]))
+  (:require
+   [app.request :as r]
+   [hiccup2.core :as h]))
 
-(defn render [content & {:keys [content-type] :or {content-type "text/html"}}]
-  (println (str "Content-type:" content-type "\n\n"))
+(defn render [content & {:keys [status content-type] :or {content-type "text/html"}}]
   (println
-   (str (h/html content))))
+   (str
+    (r/env :SERVER_PROTOCOL) (or status "200") "OK\n"
+    "Content-type:" (or content-type "text/html") "\n\n"
+    (h/html content))))

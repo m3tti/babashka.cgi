@@ -1,10 +1,14 @@
 (ns app.request
-  (:require [clojure.string :as str]
-            [hiccup2.core :as h]
-            [cheshire.core :as json]))
+  (:require
+   [clojure.string :as str]
+   [hiccup2.core :as h]
+   [cheshire.core :as json]))
 
 (defn env [keyword]
   (System/getenv (name keyword)))
+
+(defn request-method []
+  (env :REQUEST_METHOD))
 
 (defn server-url []
   (let [host (env :SERVER_NAME)
@@ -28,3 +32,6 @@
          (into {} pairs))
        (catch Exception e {})))
 
+(defn build-request []
+  {:uri (env :PATH_INFO)
+   :request-method (keyword (str/lower-case (request-method)))})
